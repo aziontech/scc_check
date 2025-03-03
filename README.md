@@ -15,11 +15,11 @@ jobs:
   scc-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - uses: aziontech/gmud_brief@main
+      - uses: aziontech/scc_check@main
 ```
 
 Or copy the `.github/workflows/scc_check.yml` file from this repository to the same path in your repository and customize as needed.
