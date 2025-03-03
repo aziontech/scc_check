@@ -1,8 +1,10 @@
 # SCC Complexity Check
 
-This repository contains a GitHub Actions workflow that automatically analyzes code complexity using the SCC tool when a Pull Request is opened, providing metrics about complexity and lines of code differences between branches.
+This repository contains a GitHub Action that automatically analyzes code complexity using the SCC tool when a Pull Request is opened, providing metrics about complexity and lines of code differences between branches.
 
 ## How to Use in Your Project
+
+Create a workflow file in your repository (e.g., `.github/workflows/complexity_check.yml`) with the following content:
 
 ```yaml
 name: SCC Complexity Check
@@ -22,4 +24,4 @@ jobs:
       - uses: aziontech/scc_check@main
 ```
 
-Or copy the `.github/workflows/scc_check.yml` file from this repository to the same path in your repository and customize as needed.
+This will automatically run the SCC complexity check on your pull requests and add a comment with the complexity metrics.
