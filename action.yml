@@ -18,11 +18,7 @@ runs:
     - name: Install dependencies and SCC
       shell: bash
       run: |
-        # Ensure jq and curl are installed
-        sudo apt-get update
-        sudo apt-get install -y jq curl
-        
-        # Verify jq and curl installation
+        # Verify jq and curl are available (pre-installed on ubuntu-latest)
         jq --version
         curl --version
         
