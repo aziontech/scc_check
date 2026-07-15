@@ -18,34 +18,32 @@ runs:
     - name: Install dependencies and SCC
       shell: bash
       run: |
-        # Ensure jq and curl are installed
-        sudo apt-get update
-        sudo apt-get install -y jq curl
-        
-        # Verify jq and curl installation
+        # Verify jq and curl are available (pre-installed on ubuntu-latest)
         jq --version
         curl --version
         
-        # Create bin directory if it doesn't exist
-        mkdir -p $HOME/bin
-        
+        # Create a temporary directory for SCC (outside the workspace so it
+        # survives the actions/checkout steps that follow)
+        SCC_DIR=$(mktemp -d)
+        WORK_DIR=$(mktemp -d)
+
         # Download and install SCC - using the latest release URL
         LATEST_SCC_VERSION=$(curl -s https://api.github.com/repos/boyter/scc/releases/latest | jq -r '.tag_name')
-        curl -sSLf https://github.com/boyter/scc/releases/download/${LATEST_SCC_VERSION}/scc_Linux_x86_64.tar.gz -o scc.tar.gz
+        curl -sSLf https://github.com/boyter/scc/releases/download/${LATEST_SCC_VERSION}/scc_Linux_x86_64.tar.gz -o "$WORK_DIR/scc.tar.gz"
 
-        mkdir -p scc_temp && tar -xzf scc.tar.gz -C scc_temp
-        mv scc_temp/scc $HOME/bin/
-        rm -rf scc_temp scc.tar.gz
-        chmod +x $HOME/bin/scc
-        export PATH=$HOME/bin:$PATH
-        echo "PATH=$HOME/bin:$PATH" >> $GITHUB_ENV
+        tar -xzf "$WORK_DIR/scc.tar.gz" -C "$WORK_DIR"
+        mv "$WORK_DIR/scc" "$SCC_DIR/"
+        rm -rf "$WORK_DIR"
+        chmod +x "$SCC_DIR/scc"
+        export PATH="$SCC_DIR:$PATH"
+        echo "PATH=$SCC_DIR:$PATH" >> $GITHUB_ENV
         
         # Verify SCC installation
         scc --version
     
     # Checkout target branch (base_ref)
     - name: Checkout target branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
       with:
         ref: ${{ github.base_ref }}
         fetch-depth: 0
@@ -59,7 +57,7 @@ runs:
     
     # Checkout source branch (head_ref)
     - name: Checkout source branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
       with:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
