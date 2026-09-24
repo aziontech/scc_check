@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   scc-check:
     runs-on: ubuntu-latest
