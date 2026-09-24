@@ -45,7 +45,7 @@ runs:
     
     # Checkout target branch (base_ref)
     - name: Checkout target branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         ref: ${{ github.base_ref }}
         fetch-depth: 0
@@ -59,7 +59,7 @@ runs:
     
     # Checkout source branch (head_ref)
     - name: Checkout source branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
@@ -79,7 +79,7 @@ runs:
         echo "CODE_DIFF=$(($SOURCE_CODE - $TARGET_CODE))" >> $GITHUB_ENV
     
     - name: Add PR comment
-      uses: actions/github-script@v6
+      uses: actions/github-script@v9
       with:
         github-token: ${{ inputs.github_token }}
         script: |
